@@ -1,6 +1,13 @@
-# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+# Build Folders
 bin
 obj
+
+# user files
+*.suo
+*.user
+
+# NuGet packages
+packages
 
 # mstest test results
 TestResults
