@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace NTestData.Basic
 {
@@ -19,7 +18,7 @@ namespace NTestData.Basic
         /// Customized object of type <typeparamref name="T"/>.
         /// </returns>
         public static T Create<T>(
-            params Action<T>[] customizations)
+            params Customization<T>[] customizations)
             where T : class, new()
         {
             return Create(() => new T(), customizations);
@@ -27,14 +26,14 @@ namespace NTestData.Basic
 
         /// <summary>
         /// Creates object of specified type <typeparamref name="T"/>
-        /// using provided instantiation function
+        /// using provided instantiation method
         /// and applies all supplied customizations.
         /// </summary>
         /// <typeparam name="T">
         /// Type of object to be created.
         /// </typeparam>
         /// <param name="instantiator">
-        /// Instantiation function used to create object of required type.
+        /// Instantiation method used to create object of required type.
         /// </param>
         /// <param name="customizations">
         /// Customizations to be applied to resulting object.
@@ -43,11 +42,11 @@ namespace NTestData.Basic
         /// Customized object of type <typeparamref name="T"/>.
         /// </returns>
         public static T Create<T>(
-            Func<T> instantiator,
-            params Action<T>[] customizations)
+            Instantiation<T> instantiator,
+            params Customization<T>[] customizations)
             where T : class
         {
-            var obj = instantiator();
+            var obj = instantiator.Invoke();
             obj.Customize(customizations);
             return obj;
         }
@@ -71,7 +70,7 @@ namespace NTestData.Basic
         /// </returns>
         public static List<T> CreateListOf<T>(
             ushort size,
-            params Action<T>[] customizations)
+            params Customization<T>[] customizations)
             where T : class, new()
         {
             return CreateListOf(size, () => new T(), customizations);
@@ -79,7 +78,7 @@ namespace NTestData.Basic
 
         /// <summary>
         /// Creates list of objects of specified type <typeparamref name="T"/>
-        /// using provided instantiation function and applies all supplied
+        /// using provided instantiation method and applies all supplied
         /// customizations to each object in the list.
         /// </summary>
         /// <typeparam name="T">
@@ -89,7 +88,7 @@ namespace NTestData.Basic
         /// Number of objects in resulting list.
         /// </param>
         /// <param name="instantiator">
-        /// Instantiation function used to create object of required type.
+        /// Instantiation method used to create object of required type.
         /// </param>
         /// <param name="customizations">
         /// Customizations to be applied to each object in the list.
@@ -99,8 +98,8 @@ namespace NTestData.Basic
         /// </returns>
         public static List<T> CreateListOf<T>(
             ushort size,
-            Func<T> instantiator,
-            params Action<T>[] customizations)
+            Instantiation<T> instantiator,
+            params Customization<T>[] customizations)
                  where T : class
         {
             var result = new List<T>(size);
@@ -129,7 +128,7 @@ namespace NTestData.Basic
         /// </returns>
         public static T Customize<T>(
             this T obj,
-            params Action<T>[] customizations)
+            params Customization<T>[] customizations)
             where T : class
         {
             foreach (var action in customizations)
