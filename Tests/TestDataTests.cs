@@ -118,8 +118,8 @@ namespace NTestData.Basic.Tests
         public void CanCustomizeObjectUsingMultipleCustomizations()
         {
             var obj = new SampleClass();
-            Action<SampleClass> greet = x => x.Text = "Hello, ";
-            Action<SampleClass> world = x => x.Text += "World!";
+            Customization<SampleClass> greet = x => x.Text = "Hello, ";
+            Customization<SampleClass> world = x => x.Text += "World!";
 
             obj.Customize(greet, world);
 
@@ -151,7 +151,7 @@ namespace NTestData.Basic.Tests
         public void CustomizeObjectWithOneOfTheCustomizationsBeingNullFails()
         {
             var obj = new SampleClass();
-            var arrayOfCustomizationsContainingNull = new Action<SampleClass>[] {null};
+            var arrayOfCustomizationsContainingNull = new Customization<SampleClass>[] {null};
 
             var exception = Record.Exception(
                 () => obj.Customize(arrayOfCustomizationsContainingNull));
